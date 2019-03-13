@@ -1,4 +1,5 @@
 from PIL import Image
+from PIL import ImageColor
 
 print("please input the file name\n(This program was written to work with PNG and JPEG, but may work with others)")
 startingImage = input()
@@ -13,8 +14,14 @@ try:
     im = Image.open(startingImage)
 except IOError:
     print("that file can't be opened")
+    input()
     exit
-im.convert
+except:
+    print("something went wrong with opening the file")
+    input()
+    exit
+gi = im.convert("L")
+
 
 
 
