@@ -1,5 +1,6 @@
 from PIL import Image
 from PIL import ImageColor
+import convertArea
 
 print("please input the file name\n(This program was written to work with PNG and JPEG, but may work with others)")
 startingImage = input()
