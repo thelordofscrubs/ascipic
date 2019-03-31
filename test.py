@@ -43,5 +43,7 @@ for x in range(96):
     newArray[x] = numpyArray[x+32]
 np.save("asciArray2.npy",newArray)
 '''
-#print(str(ord("4")))
+print(chr(46))
+
+
 

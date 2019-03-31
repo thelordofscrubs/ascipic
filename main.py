@@ -44,18 +44,43 @@ else:
     if im.size[1]%2:
         box = (0,0,im.size[0],im.size[1]-1)
         im = im.crop(box)
-    tempx = im.size[0] % (8*2*2*2)
-    tempy = im.size[1] % (17*2*2*2)
-    box = (0,0,im.size[0]-tempx,im.size[1]-tempy)
-    im = im.crop(box)
-    print(im.size)
-    im = im.resize((int(im.size[0]/2),int(im.size[1]/2)), resample=Image.LANCZOS)
-    #im = im.resize((int(im.size[0]*2),int(im.size[1])))
-    print(im.size)
-    print(im.size[0])
-    print(im.size[0]/8)
+    pixels = im.size[0] * im.size[1]
+    if pixels <= 500*500:
+        tempx = im.size[0] % (8)
+        tempy = im.size[1] % (17)
+        box = (0,0,im.size[0]-tempx,im.size[1]-tempy)
+        im = im.crop(box)
+        print(im.size)
+        im = im.resize((int(im.size[0]*4),int(im.size[1]*4)), resample=Image.LANCZOS)
+        print(im.size)
+    elif pixels <= 700*700:
+        tempx = im.size[0] % (8)
+        tempy = im.size[1] % (17)
+        box = (0,0,im.size[0]-tempx,im.size[1]-tempy)
+        im = im.crop(box)
+        print(im.size)
+        im = im.resize((int(im.size[0]*2),int(im.size[1]*2)), resample=Image.LANCZOS)
+        print(im.size)
+    elif pixels <= 1500*1500:
+        tempx = im.size[0] % (8)
+        tempy = im.size[1] % (17)
+        box = (0,0,im.size[0]-tempx,im.size[1]-tempy)
+        im = im.crop(box)
+        print(im.size)
+        im = im.resize((int(im.size[0]),int(im.size[1])), resample=Image.LANCZOS)
+        print(im.size)
+    else:
+        tempx = im.size[0] % (8*2*2)
+        tempy = im.size[1] % (17*2*2)
+        box = (0,0,im.size[0]-tempx,im.size[1]-tempy)
+        im = im.crop(box)
+        print(im.size)
+        im = im.resize((int(im.size[0]/4),int(im.size[1]/4)), resample=Image.LANCZOS)
+        print(im.size)
+        #print(im.size[0])
+        #print(im.size[0]/8)
 #dimensions = int(dimensionx + dimensiony)
-print("\nOutput into a text file or onto this window? F or W\n")
+#print("\nOutput into a text file or onto this window? F or W\n")
 #outputType = input()
 
 im.save("testgray.jpeg")
@@ -130,7 +155,7 @@ for row in range(dimy):
                 maxdif["index"] = i
         asRow += chr(maxdif["index"]+32)
     print(asRow)
-    
+
 
 
 
