@@ -1,5 +1,6 @@
 from PIL import Image
 from PIL import ImageColor
+from PIL import ImageStat
 import numpy as np
 #import convertArea
 
@@ -10,6 +11,15 @@ asciListn = np.load("asciArray2.npy")
 asciList = [[0 for y in range(8*17)] for x in range(6*16-1)]
 for x in range(95):
         asciList[x] = asciListn[x].tolist()
+
+def brighten(pixel):
+    #if pixel < 200:
+    pixel += 30
+    return pixel
+
+def darken(pixel):
+    pixel -= 30
+    return pixel
 
 print("please input the file name\n(This program was written to work with PNG and JPEG, but may work with others)")
 sI = input()
@@ -45,7 +55,7 @@ else:
         box = (0,0,im.size[0],im.size[1]-1)
         im = im.crop(box)
     pixels = im.size[0] * im.size[1]
-    if pixels <= 500*500:
+    if pixels <= 250*250:
         tempx = im.size[0] % (8)
         tempy = im.size[1] % (17)
         box = (0,0,im.size[0]-tempx,im.size[1]-tempy)
@@ -82,8 +92,14 @@ else:
 #dimensions = int(dimensionx + dimensiony)
 #print("\nOutput into a text file or onto this window? F or W\n")
 #outputType = input()
-
+print(ImageStat.Stat(im).mean)
+if ImageStat.Stat(im).mean[0] > 200:
+    im = im.point(darken)
+if ImageStat.Stat(im).mean[0] < 50:
+    im = im.point(brighten)
 im.save("testgray.jpeg")
+#im = im.point(brighten)
+#im.save("testgray1.jpeg")
 dimx = int(im.size[0]/8)
 dimy = int(im.size[1]/17)
 print(dimx)
@@ -138,6 +154,8 @@ for col in imTable:
     w += 1
 print(imTableA)
 '''
+f = open("outputASCII.txt", "w+")
+#finishedText = "" 
 for row in range(dimy):
     asRow = ""
     for column in range(dimx):
@@ -154,13 +172,37 @@ for row in range(dimy):
                 maxdif["smaDif"] = dif
                 maxdif["index"] = i
         asRow += chr(maxdif["index"]+32)
-    print(asRow)
+    #print(asRow)
+    #finishedText += asRow + "\n"
+    f.write(asRow + "\n")
+    print("printed row " + str(row) + " out of " + str(dimy))
+f.close()
 
 
 
 
 
 
-
+'''
+                if pixelDataSec[i] < 50:
+                    surmean = 0
+                    for x in range(3):
+                        surmean += pixelDataSec[i-9+x]
+                    for x in range(3):
+                        surmean += pixelDataSec[i+7+x]
+                    surmean += pixelDataSec[i-1]
+                    surmean += pixelDataSec[i+1]
+                    if surmean/8 > (pixelDataSec[i] + 30):
+                        pixelDataSec[i] = surmean/8
+                if pixelDataSec[i] > 200:
+                    surmean = 0
+                    for x in range(3):
+                        surmean += pixelDataSec[i-9+x]
+                    for x in range(3):
+                        surmean += pixelDataSec[i+7+x]
+                    surmean += pixelDataSec[i-1]
+                    surmean += pixelDataSec[i+1]
+                    if surmean/8 < (pixelDataSec[i] - 30):
+                        pixelDataSec[i] = surmean/8'''
 
 
