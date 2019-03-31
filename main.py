@@ -49,8 +49,11 @@ else:
     box = (0,0,im.size[0]-tempx,im.size[1]-tempy)
     im = im.crop(box)
     print(im.size)
-    im = im.resize((int(im.size[0]/8),int(im.size[1]/8)), resample=Image.LANCZOS)
+    im = im.resize((int(im.size[0]/2),int(im.size[1]/2)), resample=Image.LANCZOS)
+    #im = im.resize((int(im.size[0]*2),int(im.size[1])))
     print(im.size)
+    print(im.size[0])
+    print(im.size[0]/8)
 #dimensions = int(dimensionx + dimensiony)
 print("\nOutput into a text file or onto this window? F or W\n")
 #outputType = input()
@@ -71,14 +74,16 @@ for x in range(dimx):
         imTable[x][y] = imCol.crop(box)
         #print(imTable[x][y].size)
 #nonNPlist = 0
-print(asciList)
+#print(asciList)
 print("start computing?")
 input()
+'''
 w = 0
 for col in imTable:
     g = 0
+    print("printing column " + str(w) + " of " + str(dimx))
     for sec in col:
-        print("checking sec " + str(g) + " out of " + str(len(col)) + " on round " + str(w) + " out of " + str(len(imTable)))
+        #print("checking sec " + str(g) + " out of " + str(len(col)) + " on round " + str(w) + " out of " + str(len(imTable)))
         f = 0
         pixelDataSec = list(sec.getdata())
         #print(len(pixelDataSec))
@@ -101,13 +106,30 @@ for col in imTable:
                 maxdif["index"] = f
             f += 1
         imTableA += chr(maxdif["index"]+32)
-        if (g % len(imTable)) == 0:
+        if f == dimx-1:
             imTableA += "\n"
             
         g += 1
     w += 1
 print(imTableA)
-
+'''
+for row in range(dimy):
+    asRow = ""
+    for column in range(dimx):
+        maxdif = {"smaDif" : 255*8*17, "index" : 0}
+        pixelDataSec = list(imTable[column][row].getdata())
+        for i in range(len(asciList)):
+            dif = 0
+            for pixel in asciList[i]:
+                tdif = pixelDataSec[i] - pixel
+                if tdif < 0:
+                    tdif *= (-1)
+                dif +=tdif
+            if dif < maxdif["smaDif"]:
+                maxdif["smaDif"] = dif
+                maxdif["index"] = i
+        asRow += chr(maxdif["index"]+32)
+    print(asRow)
     
 
 
