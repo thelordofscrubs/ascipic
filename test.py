@@ -1,10 +1,9 @@
 import numpy as np
-
+'''
 npyArray = np.load("asciArray.npy")
 i = 0
 f = 0
 line = ""
-'''
 for array in npyArray:
     for character in array:
         if character == 255:
@@ -20,7 +19,6 @@ for array in npyArray:
             line+="\n\n"
             f = 0
     print(line)
-'''
 for x in range(32):
     for y in range(17):
         for z in range(8):
@@ -34,3 +32,16 @@ for x in range(32):
     line += "\n"
     i += 1
 print(line)
+
+
+numpyArray = np.load("asciArray.npy")
+print(numpyArray.size,numpyArray.shape)
+print(numpyArray[1])
+numpyArray[127] = numpyArray[0]
+newArray = np.zeros((96,8*17))
+for x in range(96):
+    newArray[x] = numpyArray[x+32]
+np.save("asciArray2.npy",newArray)
+'''
+#print(str(ord("4")))
+
