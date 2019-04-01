@@ -1,6 +1,7 @@
 from PIL import Image
 from PIL import ImageColor
 from PIL import ImageStat
+from PIL import ImageFilter
 import numpy as np
 #import convertArea
 
@@ -71,7 +72,7 @@ else:
         print(im.size)
         im = im.resize((int(im.size[0]*2),int(im.size[1]*2)), resample=Image.LANCZOS)
         print(im.size)
-    elif pixels <= 1500*1500:
+    elif pixels <= 1400*1400:
         tempx = im.size[0] % (8)
         tempy = im.size[1] % (17)
         box = (0,0,im.size[0]-tempx,im.size[1]-tempy)
@@ -80,12 +81,12 @@ else:
         im = im.resize((int(im.size[0]),int(im.size[1])), resample=Image.LANCZOS)
         print(im.size)
     else:
-        tempx = im.size[0] % (8*2*2)
-        tempy = im.size[1] % (17*2*2)
+        tempx = im.size[0] % (8*2)
+        tempy = im.size[1] % (17*2)
         box = (0,0,im.size[0]-tempx,im.size[1]-tempy)
         im = im.crop(box)
         print(im.size)
-        im = im.resize((int(im.size[0]/4),int(im.size[1]/4)), resample=Image.LANCZOS)
+        im = im.resize((int(im.size[0]/2),int(im.size[1]/2)), resample=Image.LANCZOS)
         print(im.size)
         #print(im.size[0])
         #print(im.size[0]/8)
@@ -97,6 +98,7 @@ if ImageStat.Stat(im).mean[0] > 200:
     im = im.point(darken)
 if ImageStat.Stat(im).mean[0] < 50:
     im = im.point(brighten)
+im = im.filter(ImageFilter.EDGE_ENHANCE_MORE)
 im.save("testgray.jpeg")
 #im = im.point(brighten)
 #im.save("testgray1.jpeg")
@@ -154,7 +156,7 @@ for col in imTable:
     w += 1
 print(imTableA)
 '''
-f = open("outputASCII.txt", "w+")
+#f = open("outputASCII.txt", "w+")
 #finishedText = "" 
 for row in range(dimy):
     asRow = ""
@@ -172,11 +174,11 @@ for row in range(dimy):
                 maxdif["smaDif"] = dif
                 maxdif["index"] = i
         asRow += chr(maxdif["index"]+32)
-    #print(asRow)
+    print(asRow)
     #finishedText += asRow + "\n"
-    f.write(asRow + "\n")
-    print("printed row " + str(row) + " out of " + str(dimy))
-f.close()
+    #f.write(asRow + "\n")
+    #print("printed row " + str(row) + " out of " + str(dimy))
+#f.close()
 
 
 
